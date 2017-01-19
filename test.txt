@@ -1,1 +1,59 @@
-hahaha
+select 
+	to_char(RegTime,'yyyyMMdd') as GHRQ,	----挂/退号日期
+	MzRegNo as GHBM,	----门诊就诊流水号
+	'1' as GTHBZ,	----退号标志
+	'400928414' as YLJGDM,	----医疗机构代码
+	MzRegNo as STFBH,	----收/退费编号
+	RegTime as GTHSJ,	----挂/退号时间
+	RegTypeId as GHLB,	----挂号类别
+	case when PatTypeId='194' then '07' when PatTypeId='293' then '03' when PatTypeId='296' then '06' when PatTypeId in('292','297') then '01' else '99' end as BXLX,	----保险类型
+	RegDept as KSBM,	----科室编码
+	IsPriority as TXBZ,	----特需标志
+	case when PatTypeId='292' then '2' else '1' end as WDBZ,	----外地标志
+	FactGet as ZFZLF,	----自费诊疗费(含挂号费)
+	DiagnoFee as ZLF,	----诊疗费
+	1 CZBS,	----初诊标示
+	2 ZZBS,	----转诊标示
+	(OtherFee1+OtherFee2) as QTF,	----其它费
+	CardNo as KH,	----卡号
+	'' as KLX,	----卡类型
+	case when IsPreReg=0 then 01 else 02 end GHFS,	----挂号方式
+	case when IsCancel='0' then '1' else '2' end  as GHRCBS,	----计入挂号人次标识
+	PatId as personID,	----院内患者唯一ID号
+	DoctorId as GHYS,	----挂号医生
+	OperId as CZYXM,	----操作员姓名
+	0 XGBZ,	----修改标志
+	'' YLYL1,	----预留一
+	'' YLYL2	----预留二
+from OuHosInfo
+
+union all
+
+select 
+	to_char(CancelTime,'yyyyMMdd') as GHRQ,	----挂/退号日期
+	MzRegNo as GHBM,	----门诊就诊流水号
+	'2' as GTHBZ,	----退号标志
+	'400928414' as YLJGDM,	----医疗机构代码
+	MzRegNo as STFBH,	----收/退费编号
+	CancelTime as GTHSJ,	----挂/退号时间
+	RegTypeId as GHLB,	----挂号类别
+	case when PatTypeId='194' then '07' when PatTypeId='293' then '03' when PatTypeId='296' then '06' when PatTypeId in('292','297') then '01' else '99' end as BXLX,	----保险类型
+	RegDept as KSBM,	----科室编码
+	IsPriority as TXBZ,	----特需标志
+	case when PatTypeId='292' then '2' else '1' end as WDBZ,	----外地标志
+	FactGet as ZFZLF,	----自费诊疗费(含挂号费)
+	DiagnoFee as ZLF,	----诊疗费
+	1 CZBS,	----初诊标示
+	2 ZZBS,	----转诊标示
+	(OtherFee1+OtherFee2) as QTF,	----其它费
+	CardNo as KH,	----卡号
+	'' as KLX,	----卡类型
+	case when IsPreReg=0 then 01 else 02 end GHFS,	----挂号方式
+	case when IsCancel='1' then '1' else '2' end  as GHRCBS,	----计入挂号人次标识
+	PatId as personID,	----院内患者唯一ID号
+	DoctorId as GHYS,	----挂号医生
+	CancelOperId as CZYXM,	----操作员姓名
+	0 XGBZ,	----修改标志
+	'' YLYL1,	----预留一
+	'' YLYL2	----预留二
+from OuHosInfo
