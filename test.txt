@@ -16,7 +16,7 @@ select
 	2 ZZBS,	----转诊标示
 	(OtherFee1+OtherFee2) as QTF,	----其它费
 	CardNo as KH,	----卡号
-	'' as KLX,	----卡类型
+	case when PatTypeId='194' then '3' when PatTypeId='292' then '1' when PatTypeId='293' then '5' when PatTypeId='296' then '0' when PatTypeId='297' then '1' else '9' end as KLX,--卡类型
 	case when IsPreReg=0 then 01 else 02 end GHFS,	----挂号方式
 	case when IsCancel='0' then '1' else '2' end  as GHRCBS,	----计入挂号人次标识
 	PatId as personID,	----院内患者唯一ID号
