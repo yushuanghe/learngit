@@ -59,3 +59,4 @@ select
 from OuHosInfo
 
 vim by master and dev
+vim for --no-ff merge
